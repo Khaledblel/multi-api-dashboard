@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Météo Sousse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="api-control">
+        <input type="password" id="api-key-input" placeholder="Weather API Key...">
+        <input type="password" id="nasa-key-input" placeholder="NASA API Key...">
+        <button id="fetch-btn">Charger</button>
+    </div>
+
+    <div class="carousel-container">
+        <!-- Navigation Buttons -->
+        <button class="nav-btn prev-btn" id="prev-btn" aria-label="Previous Slide">
+            <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="nav-btn next-btn" id="next-btn" aria-label="Next Slide">
+            <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+
+        <div class="carousel-track" id="track">
+            
+            <!-- Slide 1: Météo -->
+            <div class="slide active">
+                <div class="pillowed-card">
+            
+            <header class="card-header">
+                <h1 class="city-name">Météo Actuelle</h1>
+                <p class="date-display"><span id="city-name">Sousse</span> • <span id="current-date">--</span></p>
+            </header>
+
+            <main class="card-body">
+                <div class="temp-container">
+                    <div class="temperature"><span id="temp-val">--</span><span class="temp-unit">°</span></div>
+                    <p class="weather-desc" id="weather-desc">...</p>
+                </div>
+                <div class="weather-icon-wrapper">
+                    <div class="weather-icon-placeholder"></div>
+                    
+                    <svg style="position:absolute; width: 60px; height: 60px;" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </div>
+            </main>
+
+            <footer class="card-footer">
+                <div class="detail-item">
+                    <span class="detail-label">Humidité</span>
+                    <div class="detail-value-group">
+                        <svg class="detail-icon" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                        <span class="detail-value" id="humidity-val">--%</span>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Vent</span>
+                    <div class="detail-value-group">
+                        <svg class="detail-icon" viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path></svg>
+                        <span class="detail-value" id="wind-val">-- km/h</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div> <!-- Close Slide 1 -->
+
+    <!-- Slide 2: Open Library -->
+    <div class="slide">
+        <div class="pillowed-card open-library-card">
+            
+            <header class="card-header">
+                <h1 class="city-name">Open Library</h1>
+                <p class="date-display">Random Book</p>
+            </header>
+
+            <main class="card-body" style="display: block;">
+                <div style="margin-bottom: 20px;">
+                    <h3 id="book-title" style="font-size: 1.5rem; margin-bottom: 5px; min-height: 3rem;">Loading...</h3>
+                    <p id="book-author" style="opacity: 0.8; min-height: 1.2rem;">...</p>
+                </div>
+                <!-- Cover placeholder or image -->
+                <div id="book-cover-container" style="height: 220px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.1); border-radius: 12px; margin-bottom: 20px; overflow: hidden;">
+                    <img id="book-cover" src="" alt="Book Cover" style="max-height: 100%; display: none;">
+                    <span id="book-cover-placeholder" style="opacity: 0.5;">No Cover</span>
+                </div>
+            </main>
+
+            <footer class="card-footer">
+                <div class="detail-item">
+                    <span class="detail-label">First Published</span>
+                    <span class="detail-value" id="book-year">--</span>
+                </div>
+                <div class="detail-item" style="justify-content: center;">
+                    <button id="book-refresh-btn" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;">
+                        Next Book
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Slide 3: NASA APOD -->
+    <div class="slide">
+        <div class="pillowed-card nasa-card">
+            
+            <header class="card-header">
+                <h1 class="city-name">NASA APOD</h1>
+                <p class="date-display" id="nasa-date">Random Date</p>
+            </header>
+
+            <main class="card-body" style="display: block;">
+                <div style="margin-bottom: 20px;">
+                    <h3 id="nasa-title" style="font-size: 1.2rem; margin-bottom: 5px; min-height: 3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Loading...</h3>
+                </div>
+                <div id="nasa-img-container" style="height: 260px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); border-radius: 12px; margin-bottom: 20px; overflow: hidden; position: relative;">
+                    <img id="nasa-img" src="" alt="Space Image" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                    <span id="nasa-placeholder" style="opacity: 0.5;">No Image</span>
+                </div>
+            </main>
+
+            <footer class="card-footer">
+                <div class="detail-item">
+                    <span class="detail-label">Copyright</span>
+                    <span class="detail-value" id="nasa-copyright" style="font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 120px;">--</span>
+                </div>
+                <div class="detail-item" style="justify-content: center;">
+                    <button id="nasa-refresh-btn" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;">
+                        Next Photo
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Slide 4: RandomUser -->
+    <div class="slide">
+        <div class="pillowed-card randomuser-card">
+            
+            <header class="card-header">
+                <h1 class="city-name">Random User</h1>
+                <p class="date-display">randomuser.me</p>
+            </header>
+
+            <main class="card-body" style="display: block; text-align: center;">
+                <div id="user-avatar-container" style="width: 130px; height: 130px; margin: 0 auto 20px; border-radius: 50%; overflow: hidden; background: rgba(0,0,0,0.15); border: 3px solid rgba(255,255,255,0.3);">
+                    <img id="user-avatar" src="" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                </div>
+                <h3 id="user-name" style="font-size: 1.5rem; margin-bottom: 5px;">Loading...</h3>
+                <p id="user-email" style="opacity: 0.7; font-size: 0.85rem; margin-bottom: 10px; word-break: break-all;">...</p>
+            </main>
+
+            <footer class="card-footer" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div class="detail-item">
+                    <span class="detail-label">Location</span>
+                    <span class="detail-value" id="user-location" style="font-size: 0.8rem;">--</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Age</span>
+                    <span class="detail-value" id="user-age">--</span>
+                </div>
+                <div class="detail-item" style="justify-content: center;">
+                    <button id="user-refresh-btn" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;">
+                        Next User
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    </div> <!-- Close Track -->
+</div> <!-- Close Container -->
+
+    <script src="script.js"></script>
+</body>
+</html>
