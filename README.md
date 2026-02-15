@@ -49,7 +49,7 @@ Hosted on **GitHub Pages**:
 
 ```bash
 git clone https://github.com/Khaledblel/multi-api-dashboard.git
-cd <repo>
+cd multi-api-dashboard
 ```
 
 ### 2. Install dependencies (for Node scripts)
