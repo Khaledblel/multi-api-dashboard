@@ -39,9 +39,7 @@ A sleek, glassmorphism-styled web dashboard that consumes multiple public RESTfu
 
 Hosted on **GitHub Pages**:
 
-👉 **[View Demo](https://<username>.github.io/<repo>/)**
-
-> Replace `<username>` and `<repo>` with your values.
+👉 **[View Demo](https://khaledblel.github.io/multi-api-dashboard/)**
 
 ---
 
@@ -50,7 +48,7 @@ Hosted on **GitHub Pages**:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/<username>/<repo>.git
+git clone https://github.com/Khaledblel/multi-api-dashboard.git
 cd <repo>
 ```
 
